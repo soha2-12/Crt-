@@ -1,0 +1,31 @@
+class Solution(object):
+    def minWindow(self, s, t):
+        if t=="":
+            return t
+
+        dic_t,dic_s={},{}
+
+        for val in t:
+            dic_t[val]=dic_t.get(val,0)+1
+
+        found,target=0,len(dic_t)
+        res,length=[-1,-1],float('inf')
+
+        l=0
+        for r in range(len(s)):
+            dic_s[s[r]]=dic_s.get(s[r],0)+1
+
+            if s[r] in dic_t and dic_s[s[r]]==dic_t[s[r]]:
+                found+=1
+
+            while found==target:
+                if (r-l)+1<length:
+                    res=[l,r]
+                    length=(r-l)+1
+                if s[l] in dic_t:
+                    dic_s[s[l]]-=1
+                if s[l] in dic_t and dic_s[s[l]]<dic_t[s[l]]:
+                    found-=1
+                l+=1
+        return "" if length==float('inf') else s[res[0]:res[1]+1]
+                
