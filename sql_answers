@@ -1,0 +1,197 @@
+1. :
+SELECT e.employee_id, e.name, d.dept_name
+FROM Department d
+LEFT JOIN Employee e
+    ON d.dept_id = e.dept_id;
+
+2.
+SELECT c.customer_id, c.name, o.order_id, o.amount
+FROM Customers c
+LEFT JOIN Orders o
+    ON c.customer_id = o.customer_id;
+
+3.
+SELECT e.employee_id, e.name, s.salary
+FROM Employees e
+INNER JOIN Salaries s
+    ON e.employee_id = s.employee_id;
+
+4. 
+SELECT u.user_id, u.name, c.category_id, c.category
+FROM Users u
+CROSS JOIN Categories c;
+
+5. 
+full outer join answer 
+
+6.
+SELECT e.employee_id, e.name, s.salary
+FROM Employees e, Salaries s
+WHERE e.employee_id = s.employee_id;
+
+7. 
+SELECT e.name
+FROM Employees e
+JOIN Employees m
+    ON e.manager_id = m.employee_id
+WHERE e.salary > m.salary;
+
+8. 
+SELECT name, course
+FROM Students
+NATURAL JOIN Enrollments;
+
+
+9. 
+SELECT p.product_name, s.year, s.price
+FROM Product p
+JOIN Sales s
+    ON p.product_id = s.product_id;
+
+
+10. 
+SELECT MIN(ABS(p1.x - p2.x)) AS shortest
+FROM Point p1
+JOIN Point p2
+    ON p1.x < p2.x;
+
+
+11. 
+AI-BOT
+  (SELECT DISTINCT l1.account_id
+FROM LogInfo l1
+JOIN LogInfo l2
+    ON l1.account_id = l2.account_id
+   AND l1.ip_address <> l2.ip_address
+   AND l1.login <= l2.logout
+   AND l2.login <= l1.logout;)
+
+
+12. 
+SELECT e.employee_id, COUNT(t.employee_id) AS team_size
+FROM Employee e
+JOIN Employee t
+    ON e.team_id = t.team_id
+GROUP BY e.employee_id
+ORDER BY e.employee_id ASC;
+
+
+13. 
+SELECT p.project_id,
+       ROUND(AVG(e.experience_years), 2) AS average_years
+FROM Project p
+JOIN Employee e
+    ON p.employee_id = e.employee_id
+GROUP BY p.project_id
+ORDER BY p.project_id ASC;
+
+
+14.
+SELECT w.name AS warehouse_name,
+       SUM(w.units * p.Width * p.Length * p.Height) AS volume
+FROM Warehouse w
+JOIN Products p
+    ON w.product_id = p.product_id
+GROUP BY w.name;
+
+
+15.
+SELECT p.firstName, p.lastName, a.city, a.state
+SQL JOIN Questions & Answers  |  Page 3
+FROM Person p
+LEFT JOIN Address a
+    ON p.personId = a.personId
+ORDER BY p.firstName ASC, p.lastName ASC;
+
+
+16.
+SELECT c.name
+FROM Customers c
+LEFT JOIN Orders o
+    ON c.id = o.customerid
+WHERE o.customerid IS NULL;
+
+
+17. 
+SELECT s.id, s.name
+FROM Students s
+LEFT JOIN Departments d
+    ON s.department_id = d.id
+WHERE d.id IS NULL;
+
+
+18. 
+SELECT e.name, b.bonus
+FROM Employee e
+LEFT JOIN Bonus b
+    ON e.empId = b.empId
+WHERE b.bonus < 1000
+   OR b.bonus IS NULL;
+
+
+19. 
+SELECT v.customer_id,
+       COUNT(*) AS count_no_trans
+FROM Visits v
+LEFT JOIN Transactions t
+    ON v.visit_id = t.visit_id
+WHERE t.visit_id IS NULL
+GROUP BY v.customer_id
+ORDER BY count_no_trans DESC;
+
+
+20. 
+
+SELECT c.customer_id, c.customer_name
+FROM Customers c
+JOIN Orders o
+    ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+HAVING SUM(o.product_name = 'A') > 0
+   AND SUM(o.product_name = 'B') > 0
+   AND SUM(o.product_name = 'C') = 0
+ORDER BY c.customer_id;
+
+OR 
+
+select c.customer_id, c.customer_name
+from orders as o
+join customers as c
+on c.customer_id=o.customer_id
+where o.product_name='A' and o.product_name='B'
+and o.product_name!='C' 
+
+
+21. 
+AI BOT(
+  SELECT p.product_id,
+       COALESCE(
+           ROUND(SUM(u.units * p.price) / NULLIF(SUM(u.units), 0), 2),
+           0
+       ) AS average_price
+FROM Prices p
+LEFT JOIN UnitsSold u
+    ON p.product_id = u.product_id
+   AND u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY p.product_id;
+)
+
+22. 
+SELECT u.name, SUM(t.amount) AS balance
+FROM Users u
+JOIN Transactions t
+    ON u.account = t.account
+GROUP BY u.account, u.name
+HAVING SUM(t.amount) > 10000;
+
+
+23.
+AI BOT(
+SELECT u.name,
+       COALESCE(SUM(r.distance), 0) AS travelled_distance
+FROM Users u
+LEFT JOIN Rides r
+    ON u.id = r.user_id
+GROUP BY u.id, u.name
+ORDER BY travelled_distance DESC, u.name ASC
+  )
